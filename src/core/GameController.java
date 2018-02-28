@@ -19,6 +19,8 @@ public class GameController {
 
     @FXML
     public MenuBar newGame;
+
+    //TODO Change picture on the begging to 0.png
     @FXML
     public ImageView imageView;
     @FXML
@@ -36,13 +38,15 @@ public class GameController {
 
     private Player presentPlayer;
     private String currentPassword;
+    private String currentCategory;
+    private String revealedPassword;
+    private int noOfMisses = 0;
 
     private WordDAOImpl wordDAO = new WordDAOImpl();
     private PlayerDAOImpl playerDAO = new PlayerDAOImpl();
     private StatisticDAOImpl statisticDAO = new StatisticDAOImpl();
     private CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
 
-    private int noOfMisses;
 
 
     public void createNewPlayer(ActionEvent actionEvent) {
@@ -64,14 +68,14 @@ public class GameController {
         List<Player> players = playerDAO.getAllPlayers();
         //Populating the List
         List<String> choices = new ArrayList<>();
-        for(Player player : players) {
+        for (Player player : players) {
 
             String name = player.getName();
             int id = player.getplayerId();
 
             System.out.println(id + " " + name);
             choices.add(name);
-            }
+        }
 
         //Setting up dialog
         ChoiceDialog<String> dialog = new ChoiceDialog<>("", choices);
@@ -83,8 +87,8 @@ public class GameController {
         //Retriving info from dialog
         if (result.isPresent()) {
             result.ifPresent(name -> {
-
-                currentPlayerLabel.setText("Current Player: " + name);
+                presentPlayer = playerDAO.getPlayerByName(name);
+                currentPlayerLabel.setText("Current Player: " + presentPlayer.getName());
             });
         }
     }
@@ -97,32 +101,53 @@ public class GameController {
             winLabel.setText("YOU LOST");
     }
 
-    public void exit(ActionEvent actionEvent) {
-        System.exit(0);
+    private void acquirePassword() {
+
     }
 
-    private void acquirePassword() {}
+    private String preparePassword(String word) {
+        String spacedPassword = "";
+        for (int i = 0; i < word.length(); i++) {
+            spacedPassword += word.charAt(i) + " ";
+        }
+        revealedPassword = spacedPassword;
+        String hiddenPassword = "";
+        for (int i = 0; i < word.length(); i++) {
+            if (spacedPassword.charAt(i) != ' ')
+                hiddenPassword += '_';
+            else
+                hiddenPassword += " ";
+        }
+        return hiddenPassword;
+    }
 
-    public void play(ActionEvent actionEvent) {
-        noOfMisses = 0;
+    public void prepareGame(ActionEvent actionEvent){
         imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
 
         //Load random password from DB
+            //assign retrived pass to variable
+            //currentPassword = var
+            //assign retrived category to variable
+            //currentCategory = var
 
+                    //retrived pass goes there V
+        //String password = preparePassword(var)
 
+        //temporary section
         String category = "building";
-        String password = "house";
-        String hiddenPassword = "";
+        String password = "h o u s e";
+        String hiddenPassword = "_ _ _ _ _";
 
-        categoryLabel.setText(category);
-
-        for (int i = 0; i < password.length() - 1; i++)
-            hiddenPassword += "_";
-
+        categoryLabel.setText("Category: " + category);
         passwordLabel.setText(hiddenPassword);
+
+        
 
     }
 
+    public void exit(ActionEvent actionEvent) {
+        System.exit(0);
+    }
 
 }
 

@@ -4,10 +4,12 @@ public class Word {
 
     private int wordId;
     private String content;
+    private Category category;
 
     public Word(int wordId, String content) {
         this.wordId = wordId;
         this.content = content;
+        //this.category = category;
     }
 
     public Word(String content) {

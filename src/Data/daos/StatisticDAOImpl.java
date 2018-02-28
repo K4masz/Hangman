@@ -24,6 +24,7 @@ public class StatisticDAOImpl implements StatisticDAO {
             while (results.next()) {
                 int number_of_misses = results.getInt("number_of_misses");
                 int id = results.getInt("statisticId");
+                //TODO Add foreign word table and player table
                 Statistic temp = new Statistic(id, number_of_misses);
                 statistics.add(temp);
                 System.out.println(id + " " + number_of_misses);

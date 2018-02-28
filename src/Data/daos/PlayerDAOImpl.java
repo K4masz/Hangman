@@ -43,11 +43,26 @@ public class PlayerDAOImpl implements PlayerDAO {
 
     @Override
     public Player getPlayer(int id) {
-        ResultSet result = exec.executeQuery("SELECT * FROM Players WHERE id = '" + id);
+        ResultSet result = exec.executeQuery("SELECT * FROM Players WHERE id = " + id);
         try {
             result.next();
             String resultName = result.getString("name");
-            int resultId = result.getInt("id");
+            int resultId = result.getInt("playerId");
+            Player temp = new Player(resultId, resultName);
+            return temp;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Player getPlayerByName(String name) {
+        ResultSet result = exec.executeQuery("SELECT * FROM Players WHERE name = '" + name + "'");
+        try {
+            result.next();
+            String resultName = result.getString("name");
+            int resultId = result.getInt("playerId");
             Player temp = new Player(resultId, resultName);
             return temp;
         } catch (SQLException e) {
@@ -64,12 +79,12 @@ public class PlayerDAOImpl implements PlayerDAO {
 
     @Override
     public void updatePlayer(Player player) {
-        exec.executeUpdate("UPDATE Players SET name = '" + player.getName() + "' WHERE id= " + player.getplayerId());
+        exec.executeUpdate("UPDATE Players SET name = '" + player.getName() + "' WHERE playerId= " + player.getplayerId());
         this.getPlayer(player.getplayerId());
     }
 
     @Override
     public void deletePlayer(Player player) {
-        exec.executeUpdate("DELETE FROM Player WHERE id='" + player.getplayerId() + "'");
+        exec.executeUpdate("DELETE FROM Player WHERE playerId='" + player.getplayerId() + "'");
     }
 }

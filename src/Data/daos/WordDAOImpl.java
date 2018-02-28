@@ -1,6 +1,7 @@
 package Data.daos;
 
 import Data.intefaces.WordDAO;
+import Data.model.Category;
 import Data.model.Word;
 import core.Executer;
 
@@ -22,8 +23,10 @@ public class WordDAOImpl implements WordDAO {
         //populating the List
         try {
             while (results.next()) {
+                //Own
                 String content = results.getString("content");
                 int id = results.getInt("wordId");
+                //Foreign
 
                 Word temp = new Word(id, content);
                 words.add(temp);
@@ -41,9 +44,12 @@ public class WordDAOImpl implements WordDAO {
         ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE id = '" + id + "'");
         try {
             result.next();
+
             String resultName = result.getString("WordId");
             int resultId = result.getInt("content");
-            //TODO Add foreign keys;
+            //Foreign
+            //TODO Add foreign category table
+
             Word temp = new Word(resultId, resultName);
             return temp;
         } catch (SQLException e) {
