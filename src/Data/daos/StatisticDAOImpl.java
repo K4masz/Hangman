@@ -37,7 +37,7 @@ public class StatisticDAOImpl implements StatisticDAO {
 
     @Override
     public Statistic getStatistic(int id) {
-        ResultSet result = exec.executeQuery("SELECT * FROM Statistics WHERE statisticId = '" + id + "';");
+        ResultSet result = exec.executeQuery("SELECT * FROM Statistics WHERE statisticId = '" + id + "'");
         try {
             result.next();
             int resultNumberOfMisses = result.getInt("number_of_misses");
@@ -53,18 +53,18 @@ public class StatisticDAOImpl implements StatisticDAO {
 
     @Override
     public void addStatistic(Statistic statistic) {
-        exec.executeUpdate("INSERT INTO Statistics VALUES ('" + statistic.getNumberOfMisses() + "');");
+        exec.executeUpdate("INSERT INTO Statistics VALUES ('" + statistic.getNumberOfMisses() + "')");
         System.out.println(statistic.getStatisticId() + " Added to Database");
     }
 
     @Override
     public void updateStatistic(Statistic statistic) {
-        exec.executeUpdate("UPDATE Statistics SET content = '" + statistic.getNumberOfMisses() + "' WHERE id= " + statistic.getStatisticId() + ";");
+        exec.executeUpdate("UPDATE Statistics SET content = '" + statistic.getNumberOfMisses() + "' WHERE id= " + statistic.getStatisticId());
         this.getStatistic(statistic.getStatisticId());
     }
 
     @Override
     public void deleteStatistic(Statistic statistic) {
-        exec.executeUpdate("DELETE FROM Statistics WHERE id='" + statistic.getStatisticId() + "';");
+        exec.executeUpdate("DELETE FROM Statistics WHERE id='" + statistic.getStatisticId() + "'");
     }
 }

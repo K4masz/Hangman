@@ -10,6 +10,7 @@ import java.sql.SQLException;
 public class Executer {
 
     private DBConnection conn;
+
     public Executer(DBConnection conn) {
         this.conn = conn;
     }
@@ -29,6 +30,7 @@ public class Executer {
 
     public void executeUpdate(String query) {
         try (PreparedStatement p = conn.getConnection().prepareStatement(query)) {
+            ResultSet result = p.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }

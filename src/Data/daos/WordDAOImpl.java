@@ -38,7 +38,7 @@ public class WordDAOImpl implements WordDAO {
 
     @Override
     public Word getWord(int id) {
-        ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE id = '" + id + "';");
+        ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE id = '" + id + "'");
         try {
             result.next();
             String resultName = result.getString("WordId");
@@ -54,18 +54,18 @@ public class WordDAOImpl implements WordDAO {
 
     @Override
     public void addWord(Word word) {
-        exec.executeUpdate("INSERT INTO Words VALUES ('" + word.getWordId() + "');");
+        exec.executeUpdate("INSERT INTO Words VALUES (1,'" + word.getWordId() + "')");
         System.out.println(word.getWordId() + " Added to Database");
     }
 
     @Override
     public void updateWord(Word word) {
-        exec.executeUpdate("UPDATE Words SET content = '" + word.getContent() + "' WHERE id= " + word.getWordId() + ";");
+        exec.executeUpdate("UPDATE Words SET content = '" + word.getContent() + "' WHERE id= " + word.getWordId());
         this.getWord(word.getWordId());
     }
 
     @Override
     public void deleteWord(Word word) {
-        exec.executeUpdate("DELETE FROM Words WHERE id='" + word.getWordId() + "';");
+        exec.executeUpdate("DELETE FROM Words WHERE id='" + word.getWordId() + "'");
     }
 }

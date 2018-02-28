@@ -1,5 +1,8 @@
 package core;
 
+import Data.daos.CategoryDAOImpl;
+import Data.daos.StatisticDAOImpl;
+import Data.daos.WordDAOImpl;
 import Data.model.Player;
 import Data.daos.PlayerDAOImpl;
 import javafx.event.ActionEvent;
@@ -32,8 +35,13 @@ public class GameController {
     public Label passwordLabel;
 
     private Player presentPlayer;
-    private PlayerDAOImpl playerDAO = new PlayerDAOImpl();
     private String currentPassword;
+
+    private WordDAOImpl wordDAO = new WordDAOImpl();
+    private PlayerDAOImpl playerDAO = new PlayerDAOImpl();
+    private StatisticDAOImpl statisticDAO = new StatisticDAOImpl();
+    private CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
+
     private int noOfMisses;
 
 
@@ -47,10 +55,7 @@ public class GameController {
 
         //Retriving info from dialog
         if (result.isPresent()) {
-            result.ifPresent(name -> {
-                playerDAO.addPlayer(new Player(name));
-
-            });
+            result.ifPresent(name -> playerDAO.addPlayer(new Player(name)));
         }
     }
 
@@ -67,7 +72,6 @@ public class GameController {
             System.out.println(id + " " + name);
             choices.add(name);
             }
-
 
         //Setting up dialog
         ChoiceDialog<String> dialog = new ChoiceDialog<>("", choices);
