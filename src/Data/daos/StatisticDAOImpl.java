@@ -3,6 +3,7 @@ package Data.daos;
 import Data.intefaces.StatisticDAO;
 import Data.model.Category;
 import Data.model.Statistic;
+import core.DBConnection;
 import core.Executer;
 
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class StatisticDAOImpl implements StatisticDAO {
 
-    private Executer exec;
+    private Executer exec = new Executer(DBConnection.getInstance());
 
     @Override
     public List<Statistic> getAllStatistics() {

@@ -22,7 +22,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-
 //        ResultSet result = exec.executeQuery("SELECT * FROM player");
 /*
         try {

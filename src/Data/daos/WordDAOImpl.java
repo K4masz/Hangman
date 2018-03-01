@@ -3,6 +3,7 @@ package Data.daos;
 import Data.intefaces.WordDAO;
 import Data.model.Category;
 import Data.model.Word;
+import core.DBConnection;
 import core.Executer;
 
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class WordDAOImpl implements WordDAO {
 
-    private Executer exec;
+    private Executer exec = new Executer(DBConnection.getInstance());
 
     @Override
     public List<Word> getAllWords() {
@@ -41,12 +42,12 @@ public class WordDAOImpl implements WordDAO {
 
     @Override
     public Word getWord(int id) {
-        ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE id = '" + id + "'");
+        ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE wordId = " + id );
         try {
             result.next();
 
-            String resultName = result.getString("WordId");
-            int resultId = result.getInt("content");
+            int resultId = result.getInt("wordId");
+            String resultName = result.getString("content");
             //Foreign
             //TODO Add foreign category table
 

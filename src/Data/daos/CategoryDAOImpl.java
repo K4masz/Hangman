@@ -2,6 +2,7 @@ package Data.daos;
 
 import Data.intefaces.CategoryDAO;
 import Data.model.Category;
+import core.DBConnection;
 import core.Executer;
 
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class CategoryDAOImpl implements CategoryDAO{
 
-    private Executer exec;
+    private Executer exec = new Executer(DBConnection.getInstance());
 
     @Override
     public List<Category> getAllCategories() {

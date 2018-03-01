@@ -1,21 +1,19 @@
 package core;
 
 import Data.daos.CategoryDAOImpl;
+import Data.daos.PlayerDAOImpl;
 import Data.daos.StatisticDAOImpl;
 import Data.daos.WordDAOImpl;
 import Data.model.Player;
-import Data.daos.PlayerDAOImpl;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,13 +41,15 @@ public class GameController {
     @FXML
     public Label passwordLabel;
 
-    private Scene presentScene;
+
     private Player presentPlayer;
     private String currentPassword;
     private String currentCategory;
     private String revealedPassword;
-    private int noOfMisses = 0;
+    private int noOfMisses;
+    
     private boolean gameInProgress = false;
+    private ArrayList<Character> usedLetters = new ArrayList<>();
 
     private WordDAOImpl wordDAO = new WordDAOImpl();
     private PlayerDAOImpl playerDAO = new PlayerDAOImpl();
@@ -119,7 +119,7 @@ public class GameController {
         }
         revealedPassword = spacedPassword;
         String hiddenPassword = "";
-        for (int i = 0; i < word.length(); i++) {
+        for (int i = 0; i < spacedPassword.length(); i++) {
             if (spacedPassword.charAt(i) != ' ')
                 hiddenPassword += '_';
             else
@@ -129,56 +129,62 @@ public class GameController {
     }
 
     public void prepareGame(ActionEvent actionEvent) {
+
+        noOfMisses = 0;
         imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
 
         //Load random password from DB
-        //assign retrived pass to variable
-        //currentPassword = var
+        currentPassword = wordDAO.getWord(31).getContent();
         //assign retrived category to variable
         //currentCategory = var
 
-        //retrived pass goes there V
-        //String password = preparePassword(var)
+        String password = preparePassword(currentPassword);
 
         //temporary section
         String category = "building";
-        String password = "h o u s e";
-        String hiddenPassword = "_ _ _ _ _";
-        //
 
-        categoryLabel.setText("Category: " + category);
-        passwordLabel.setText(hiddenPassword);
+        winLabel.setText("");
+        categoryLabel.setText("Category: " + currentCategory);
+        passwordLabel.setText(password);
 
-        presentScene = mainPane.getScene();
-        presentScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+        mainPane.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if (gameInProgress)
-                    isCharacterPresentInPassword(event.getText());
+                    if (isCharacterPresentInPassword(event.getText()) && !(isLetterAlreadyUsed(event.getText()))) {
+                        //RevealaLetter
+
+                    } else {
+                        missLetter();
+                    }
+
+
+                if (isPasswordRevealed(currentPassword)) {
+                    gameInProgress = false;
+                    winLabel.setText("YOU WON!");
+
+                } else if (isMaxNumberOfMissesReached()) {
+                    gameInProgress = false;
+                    winLabel.setText("YOU LOST!");
+
+                }
             }
         });
         game();
     }
 
-
     private void game() {
-
         gameInProgress = true;
-        do {
-
-            //Game logic
-            //Wait for key to be pressed
-
-            //key is present in password ? reveal keys in pass : missClick();
 
 
-            //DO while is passReav == false or isMaxNumberOfMissesReached == false
-        } while (isPasswordRevealed(currentPassword) || isMaxNumberOfMissesReached());
-        gameInProgress = false;
-        if (isPasswordRevealed(currentPassword))
-            winLabel.setText("YOU WON!");
-        else
-            winLabel.setText("YOU LOST!");
+        //Game logic
+        //Wait for key to be pressed
+
+        //key is present in password ? reveal keys in pass : missClick();
+
+
+        //DO while is passReav == false or isMaxNumberOfMissesReached == false
     }
 
     private boolean isPasswordRevealed(String hiddenPassword) {
@@ -196,5 +202,10 @@ public class GameController {
     public boolean isMaxNumberOfMissesReached() {
         return noOfMisses == 10 ? true : false;
     }
+
+    private boolean isLetterAlreadyUsed(String sign) {
+        return usedLetters.contains(sign.charAt(0));
+    }
+
 }
 

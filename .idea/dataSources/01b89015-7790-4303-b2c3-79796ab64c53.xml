@@ -4,7 +4,7 @@
     <root id="1"/>
     <schema id="2" parent="1" name="ZIIBD6">
       <ObjectId>1526</ObjectId>
-      <IntrospectionTimestamp>2018-02-28.12:02:58</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2018-02-28.23:51:58</IntrospectionTimestamp>
       <CreatedTimestamp>2017-10-16.11:48:16</CreatedTimestamp>
       <ModifiedTimestamp>2018-02-28.12:02:56</ModifiedTimestamp>
       <CommentsHash>205726574628333</CommentsHash>
@@ -2192,7 +2192,7 @@ Contains 25 rows. References with jobs, employees, and departments tables.</Comm
     </table>
     <view id="705" parent="2" name="EMP_DETAILS_VIEW">
       <ObjectId>365759</ObjectId>
-      <DependsOnIds>365741,365743,365745,365748,365751,365753</DependsOnIds>
+      <DependsOnIds>365743,365748,365753,365751,365745,365741</DependsOnIds>
       <CreatedTimestamp>2017-10-16.11:48:17</CreatedTimestamp>
       <ModifiedTimestamp>2017-10-16.11:48:17</ModifiedTimestamp>
     </view>
