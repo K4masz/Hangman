@@ -47,7 +47,7 @@ public class GameController {
     private String currentCategory;
     private String revealedPassword;
     private int noOfMisses;
-    
+
     private boolean gameInProgress = false;
     private ArrayList<Character> usedLetters = new ArrayList<>();
 
@@ -102,10 +102,11 @@ public class GameController {
 
     private void missLetter() {
         noOfMisses++;
-        if (noOfMisses < 11)
-            imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
-        else
+        if (isMaxNumberOfMissesReached())
             winLabel.setText("YOU LOST");
+        else
+            imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
+
     }
 
     private void acquirePassword() {
@@ -129,11 +130,11 @@ public class GameController {
     }
 
     public void prepareGame(ActionEvent actionEvent) {
-
         noOfMisses = 0;
         imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
 
         //Load random password from DB
+
         currentPassword = wordDAO.getWord(31).getContent();
         //assign retrived category to variable
         //currentCategory = var
@@ -142,6 +143,7 @@ public class GameController {
 
         //temporary section
         String category = "building";
+        currentCategory = category;
 
         winLabel.setText("");
         categoryLabel.setText("Category: " + currentCategory);
@@ -152,12 +154,13 @@ public class GameController {
             @Override
             public void handle(KeyEvent event) {
                 if (gameInProgress)
-                    if (isCharacterPresentInPassword(event.getText()) && !(isLetterAlreadyUsed(event.getText()))) {
-                        //RevealaLetter
+                    missCounter.setText(event.getText());
+                if (isCharacterPresentInPassword(event.getText()) && !(isLetterAlreadyUsed(event.getText()))) {
+                    //RevealaLetter
 
-                    } else {
-                        missLetter();
-                    }
+                } else {
+                    missLetter();
+                }
 
 
                 if (isPasswordRevealed(currentPassword)) {
@@ -182,9 +185,6 @@ public class GameController {
         //Wait for key to be pressed
 
         //key is present in password ? reveal keys in pass : missClick();
-
-
-        //DO while is passReav == false or isMaxNumberOfMissesReached == false
     }
 
     private boolean isPasswordRevealed(String hiddenPassword) {
@@ -200,7 +200,7 @@ public class GameController {
     }
 
     public boolean isMaxNumberOfMissesReached() {
-        return noOfMisses == 10 ? true : false;
+        return noOfMisses == 11 ? true : false;
     }
 
     private boolean isLetterAlreadyUsed(String sign) {
