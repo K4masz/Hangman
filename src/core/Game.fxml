@@ -43,7 +43,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="repeatGameButton" layoutX="286.0" layoutY="182.0" mnemonicParsing="false" onAction="#prepareGame" text="Play">
+      <Button fx:id="repeatGameButton" layoutX="286.0" layoutY="182.0" mnemonicParsing="false" onAction="#game" text="Play">
          <font>
             <Font size="25.0" />
          </font>

@@ -4,7 +4,11 @@ import Data.daos.CategoryDAOImpl;
 import Data.daos.PlayerDAOImpl;
 import Data.daos.StatisticDAOImpl;
 import Data.daos.WordDAOImpl;
+import Data.model.Category;
 import Data.model.Player;
+import Data.model.Word;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,6 +21,7 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class GameController {
 
@@ -106,11 +111,33 @@ public class GameController {
             winLabel.setText("YOU LOST");
         else
             imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
+    }
 
+    private void revealLetter(char letter) {
+        //getCharPositions
+        ArrayList<Integer> positions = new ArrayList<>();
+        for (int i = 0; i < revealedPassword.length() - 1; i++)
+            if (revealedPassword.charAt(i) == letter)
+                positions.add(i);
+
+        StringBuilder sb = new StringBuilder(currentPassword);
+
+        //revealLetter
+        for (Integer x : positions)
+            sb.setCharAt(x, revealedPassword.charAt(x));
+        currentPassword = sb.toString();
+        passwordLabel.setText(currentPassword);
     }
 
     private void acquirePassword() {
+        int minWordId = 28, maxWordId = 31;
+        int randomId = new Random().nextInt(maxWordId + 1 - minWordId) + minWordId;
 
+        Word word = wordDAO.getWord(randomId);
+        Category category = categoryDAO.getCategory(word.getCategoryId());
+
+        currentPassword = preparePassword(word.getContent());
+        currentCategory = category.getName();
     }
 
     private String preparePassword(String word) {
@@ -129,62 +156,38 @@ public class GameController {
         return hiddenPassword;
     }
 
-    public void prepareGame(ActionEvent actionEvent) {
+    public void game(ActionEvent actionEvent) {
         noOfMisses = 0;
         imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
 
-        //Load random password from DB
-
-        currentPassword = wordDAO.getWord(31).getContent();
-        //assign retrived category to variable
-        //currentCategory = var
-
-        String password = preparePassword(currentPassword);
-
-        //temporary section
-        String category = "building";
-        currentCategory = category;
+        acquirePassword();
 
         winLabel.setText("");
         categoryLabel.setText("Category: " + currentCategory);
-        passwordLabel.setText(password);
-
+        passwordLabel.setText(currentPassword);
 
         mainPane.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (gameInProgress)
-                    missCounter.setText(event.getText());
-                if (isCharacterPresentInPassword(event.getText()) && !(isLetterAlreadyUsed(event.getText()))) {
-                    //RevealaLetter
+                if (gameInProgress) {
+                    char sign = Character.toUpperCase(event.getText().charAt(0));
+                    missCounter.setText(String.valueOf((noOfMisses)));
+                    if (isCharacterPresentInPassword(sign) && !(isLetterAlreadyUsed(sign)))
+                        revealLetter(sign);
+                    else
+                        missLetter();
 
-                } else {
-                    missLetter();
-                }
-
-
-                if (isPasswordRevealed(currentPassword)) {
-                    gameInProgress = false;
-                    winLabel.setText("YOU WON!");
-
-                } else if (isMaxNumberOfMissesReached()) {
-                    gameInProgress = false;
-                    winLabel.setText("YOU LOST!");
-
+                    if (isPasswordRevealed(currentPassword)) {
+                        gameInProgress = false;
+                        winLabel.setText("YOU WON!");
+                    } else if (isMaxNumberOfMissesReached()) {
+                        gameInProgress = false;
+                        winLabel.setText("YOU LOST!");
+                    }
                 }
             }
         });
-        game();
-    }
-
-    private void game() {
         gameInProgress = true;
-
-
-        //Game logic
-        //Wait for key to be pressed
-
-        //key is present in password ? reveal keys in pass : missClick();
     }
 
     private boolean isPasswordRevealed(String hiddenPassword) {
@@ -195,17 +198,18 @@ public class GameController {
         System.exit(0);
     }
 
-    private boolean isCharacterPresentInPassword(String sign) {
-        return revealedPassword.contains(sign);
+    private boolean isCharacterPresentInPassword(char sign) {
+        return revealedPassword.indexOf(sign) == -1 ? false : true;
     }
 
     public boolean isMaxNumberOfMissesReached() {
         return noOfMisses == 11 ? true : false;
     }
 
-    private boolean isLetterAlreadyUsed(String sign) {
-        return usedLetters.contains(sign.charAt(0));
+    private boolean isLetterAlreadyUsed(char sign) {
+        return usedLetters.contains(sign);
     }
+
 
 }
 

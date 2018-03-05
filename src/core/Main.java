@@ -21,21 +21,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-
-//        ResultSet result = exec.executeQuery("SELECT * FROM player");
-/*
-        try {
-            while (result.next()) {
-                String surname = result.getString("surname");
-                String firstname = result.getString("firstname");
-                Long phone_number = result.getLong("phone_number");
-                int id = result.getInt("id");
-                System.out.println(surname + " " + firstname + " " + phone_number + " " + id);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-*/
         launch(args);
     }
 }

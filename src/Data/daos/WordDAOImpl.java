@@ -27,9 +27,10 @@ public class WordDAOImpl implements WordDAO {
                 //Own
                 String content = results.getString("content");
                 int id = results.getInt("wordId");
+                int categoryId = results.getInt("categoryId");
                 //Foreign
 
-                Word temp = new Word(id, content);
+                Word temp = new Word(id, content, categoryId);
                 words.add(temp);
                 System.out.println(id + " " + content);
             }
@@ -48,10 +49,11 @@ public class WordDAOImpl implements WordDAO {
 
             int resultId = result.getInt("wordId");
             String resultName = result.getString("content");
+            int categoryId = result.getInt("categoryId");
             //Foreign
             //TODO Add foreign category table
 
-            Word temp = new Word(resultId, resultName);
+            Word temp = new Word(resultId, resultName, categoryId);
             return temp;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -4,12 +4,12 @@ public class Word {
 
     private int wordId;
     private String content;
-    private Category category;
+    private int categoryId;
 
-    public Word(int wordId, String content) {
+    public Word(int wordId, String content, int categoryId) {
         this.wordId = wordId;
         this.content = content;
-        //this.category = category;
+        this.categoryId = categoryId;
     }
 
     public Word(String content) {
@@ -33,5 +33,13 @@ public class Word {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }
