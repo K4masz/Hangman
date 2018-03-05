@@ -49,8 +49,7 @@ public class WordDAOImpl implements WordDAO {
             int resultId = result.getInt("wordId");
             String resultName = result.getString("content");
             int categoryId = result.getInt("categoryId");
-            //Foreign
-            //TODO Add foreign category table
+
 
             Word temp = new Word(resultId, resultName, categoryId);
             return temp;
@@ -59,6 +58,31 @@ public class WordDAOImpl implements WordDAO {
         }
         return null;
     }
+
+    @Override
+    public int getMaxId() {
+        ResultSet result = exec.executeQuery("Select MAX(WORDID) FROM WORDS");
+        try {
+            result.next();
+            return result.getInt("MAX(WORDID)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public int getMinId() {
+        ResultSet result = exec.executeQuery("Select MIN(WORDID) FROM WORDS");
+        try {
+            result.next();
+            return result.getInt("MIN(WORDID)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 
     @Override
     public void addWord(Word word) {

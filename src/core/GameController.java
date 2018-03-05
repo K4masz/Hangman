@@ -178,6 +178,8 @@ public class GameController {
 
     public void beginGame(ActionEvent actionEvent) {
         if (presentPlayer != null) {
+            repeatGameButton.setVisible(false);
+            repeatGameButton.setText("One more game?");
             noOfMisses = 0;
             imageView.setImage(new Image("./img/" + noOfMisses + ".png"));
 
@@ -199,9 +201,11 @@ public class GameController {
                             missLetter();
 
                         if (isPasswordRevealed(currentPassword)) {
+                            repeatGameButton.setVisible(true);
                             gameInProgress = false;
                             winLabel.setText("YOU WON!");
                         } else if (isMaxNumberOfMissesReached()) {
+                            repeatGameButton.setVisible(true);
                             gameInProgress = false;
                             winLabel.setText("YOU LOST!");
                         }
@@ -244,7 +248,7 @@ public class GameController {
     }
 
     private void acquirePassword() {
-        int minWordId = 28, maxWordId = 31;
+        int minWordId = wordDAO.getMinId(), maxWordId = wordDAO.getMaxId();
         int randomId = new Random().nextInt(maxWordId + 1 - minWordId) + minWordId;
 
         Word word = wordDAO.getWord(randomId);
