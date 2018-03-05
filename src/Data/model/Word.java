@@ -12,6 +12,11 @@ public class Word {
         this.categoryId = categoryId;
     }
 
+    public Word(String content, int categoryId) {
+        this.content = content;
+        this.categoryId = categoryId;
+    }
+
     public Word(String content) {
         this.content = content;
     }

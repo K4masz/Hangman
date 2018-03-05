@@ -16,12 +16,18 @@
         <menus>
           <Menu mnemonicParsing="false" text="Game">
             <items>
-                  <MenuItem mnemonicParsing="false" text="New Game" />
+                  <MenuItem mnemonicParsing="false" onAction="#beginGame" text="New Game" />
                 <MenuItem mnemonicParsing="false" onAction="#createNewPlayer" text="New Player" />
                   <MenuItem mnemonicParsing="false" onAction="#changePlayer" text="Change Player" />
               <MenuItem mnemonicParsing="false" onAction="#exit" text="Close" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Options">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#addCategory" text="Add Category" />
+                   <MenuItem mnemonicParsing="false" onAction="#addWord" text="add Word" />
+               </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
@@ -43,7 +49,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="repeatGameButton" layoutX="286.0" layoutY="182.0" mnemonicParsing="false" onAction="#game" text="Play">
+      <Button fx:id="repeatGameButton" layoutX="286.0" layoutY="182.0" mnemonicParsing="false" onAction="#beginGame" text="Play">
          <font>
             <Font size="25.0" />
          </font>

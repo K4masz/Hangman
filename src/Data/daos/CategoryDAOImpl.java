@@ -51,6 +51,21 @@ public class CategoryDAOImpl implements CategoryDAO{
     }
 
     @Override
+    public Category getCategoryByName(String name) {
+        ResultSet result = exec.executeQuery("SELECT * FROM Categories WHERE name = '" + name + "'");
+        try {
+            result.next();
+            String resultName = result.getString("name");
+            int resultId = result.getInt("categoryId");
+            Category temp = new Category(resultId, resultName);
+            return temp;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public void addCategory(Category category) {
         exec.executeUpdate("INSERT INTO Categories VALUES (1,'" + category.getName() + "')");
         System.out.println(category.getName() + " Added to Database");

@@ -1,7 +1,6 @@
 package Data.daos;
 
 import Data.intefaces.WordDAO;
-import Data.model.Category;
 import Data.model.Word;
 import core.DBConnection;
 import core.Executer;
@@ -43,7 +42,7 @@ public class WordDAOImpl implements WordDAO {
 
     @Override
     public Word getWord(int id) {
-        ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE wordId = " + id );
+        ResultSet result = exec.executeQuery("SELECT * FROM Words WHERE wordId = " + id);
         try {
             result.next();
 
@@ -63,7 +62,7 @@ public class WordDAOImpl implements WordDAO {
 
     @Override
     public void addWord(Word word) {
-        exec.executeUpdate("INSERT INTO Words VALUES (1,'" + word.getWordId() + "')");
+        exec.executeUpdate("INSERT INTO Words VALUES (1,'" + word.getContent() + "'," + word.getCategoryId() + ")");
         System.out.println(word.getWordId() + " Added to Database");
     }
 
